@@ -1,11 +1,17 @@
-// OurPhone.cpp: определяет точку входа для консольного приложения.
-//
-
 #include "stdafx.h"
 
+using namespace std;
 
 int main()
 {
-    return 0;
+	MENU a;
+
+	cout << "Enter any key to start: ";
+	_getch();
+	system("cls");
+
+	a.MainMenu();
+
+	return 0;
 }
 
