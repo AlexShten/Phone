@@ -2,6 +2,9 @@
 
 using namespace std;
 
+struct tm *LocalTime;
+time_t t;
+
 enum ConsoleColor
 {
 	Black = 0,
@@ -21,11 +24,22 @@ enum ConsoleColor
 	Yellow = 14,
 	White = 15
 };
-void SetColor(ConsoleColor text, ConsoleColor background)
+//void SetColor(ConsoleColor text, ConsoleColor background)
+//{
+//	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+//	SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
+//}
+void Set_Color(int text, int background)
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
 }
+
+void Blackout()
+{
+
+}
+
 
 MENU::MENU()
 {
@@ -40,6 +54,25 @@ void MENU::SetScroll(bool tmp)
 	scroll = tmp;
 }
 
+int GetHour()
+{
+	t = time(NULL);
+	LocalTime = localtime(&t);
+	return LocalTime->tm_hour;
+}
+int GetMinute()
+{
+	t = time(NULL);
+	LocalTime = localtime(&t);
+	return LocalTime->tm_min;
+}
+int GetSecond()
+{
+	t = time(NULL);
+	LocalTime = localtime(&t);
+	return LocalTime->tm_sec;
+}
+
 void MENU::ScreenMode(int width, int height)
 {
 	HANDLE out_handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -51,12 +84,18 @@ void MENU::ScreenMode(int width, int height)
 
 void MENU::PatternForPrint(int flag, int param, string text, int printParam)
 {
+	//cout << "\t";
+	//if (flag == param) SetColor(Black, White);
+	//else SetColor(White, Black);
+	//if (printParam == 1) cout << param << ". " << text << endl;
+	//if (printParam == 0) cout << text;
+	//SetColor(White, Black);
 	cout << "\t";
-	if (flag == param) SetColor(Black, White);
-	else SetColor(White, Black);
+	if (flag == param) Set_Color(color1, color2);
+	else Set_Color(color3, color4);
 	if (printParam == 1) cout << param << ". " << text << endl;
 	if (printParam == 0) cout << text;
-	SetColor(White, Black);
+	Set_Color(color3, color4);
 }
 void MENU::PrintMainPage(int flag)
 {
@@ -99,7 +138,7 @@ void MENU::PrintMainPage(int flag)
 void MENU::PrintMenu(int flag)
 {
 	system("cls");
-	cout << "" << endl;
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<< endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "MENU..." << endl;
 	cout << "" << endl;
@@ -124,7 +163,7 @@ void MENU::PrintMenu(int flag)
 void MENU::PrintOptions(int flag)
 {
 	system("cls");
-	cout << "" << endl;
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<< endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "OPTIONS..." << endl;
 	cout << "" << endl;
@@ -144,9 +183,17 @@ void MENU::PrintOptions(int flag)
 
 void MENU::MainMenu()
 {
+	color1 = 0;
+	color2 = 15;
+	color3 = 15;
+	color4 = 0;
+
 	int key;
 	int flag = 1;
 	int branch = 1;
+	int counter = 0;
+	int timer = 0;
+	
 
 	Organizer Org;
 	Calculator Calc;
@@ -158,15 +205,25 @@ void MENU::MainMenu()
 
 	while (true)
 	{
-		Sleep(1);
+
+		Sleep(10);
+		counter++;
+		timer++;
+
 
 		if (_kbhit())
 		{
-			key = _getch();
+			key = _getch();		
+
+			timer = 0;
+			color1 = 0;
+			color2 = 15;
+			color3 = 15;
+			color4 = 0;
 
 			switch (branch)
 			{
-			case 1://√лавный экран
+			case 1://Главный экран
 				if (key == 77) flag++;
 				if (key == 75) flag--;
 
@@ -199,7 +256,7 @@ void MENU::MainMenu()
 				this->PrintMainPage(flag);
 				break;
 
-			case 2://ќсновное меню
+			case 2://Основное меню
 				if (key == 80) flag++;
 				if (key == 72) flag--;
 
@@ -268,7 +325,7 @@ void MENU::MainMenu()
 				this->PrintMenu(flag);
 				break;
 
-			case 3://Ёкран настроек
+			case 3://Экран настроек
 				if (key == 80) flag++;
 				if (key == 72) flag--;
 
@@ -307,6 +364,37 @@ void MENU::MainMenu()
 				this->PrintOptions(flag);
 				break;
 			}
+		}
+
+
+		if (timer >= 1000)
+		{
+			system("cls");
+		}
+		if (counter >= 100 && timer >= 500 && timer <1000)
+		{
+			color1 = 0;
+			color2 = 7;
+			color3 = 8;
+			color4 = 0;
+			Set_Color(color3, color4);
+
+			if (branch == 1) this->PrintMainPage(flag);
+			if (branch == 2) this->PrintMenu(flag);
+			if (branch == 3) this->PrintOptions(flag);
+			counter = 0;
+		}
+		if (counter >= 100 && timer <500)
+		{
+			color1 = 0;
+			color2 = 15;
+			color3 = 15;
+			color4 = 0;
+			Set_Color(color3, color4);
+
+			if (branch == 2) this->PrintMenu(flag);
+			if (branch == 3) this->PrintOptions(flag);
+			counter = 0;
 		}
 	}
 }

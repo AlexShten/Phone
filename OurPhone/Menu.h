@@ -9,6 +9,8 @@ private:
 	bool scroll;
 
 public:
+	int color1, color2, color3, color4;
+
 	MENU();
 	bool GetScroll();
 	void SetScroll(bool);
@@ -23,3 +25,7 @@ public:
 
 	void MainMenu();
 };
+
+int GetHour();
+int GetMinute();
+int GetSecond();
