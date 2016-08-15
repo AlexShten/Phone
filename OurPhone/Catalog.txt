@@ -1,0 +1,50 @@
+fantasy;Witcher;Andjey Sapkovsky;25.1;5;1
+fantasy;451 Fahrenheit;Ray Bredberry;20;5;2
+fantasy;Game of Thrones  p1;Gorge Martin;15.6;4;3
+fantasy;Metro 2035;Dmitry Glukhovsky;14;3;4
+fantasy;Season of storms;Andjey Sapkovsky;20.7;4;5
+fantasy;Game of Thrones  p2;Gorge Martin;15;4;6
+fantasy;Spoils of war;Allan Dean Foster;21.25;5;7
+fantasy;The false mirrors;Allan Dean Foster;13.8;3;8
+fantasy;A call to arms;Allan Dean Foster;16.56;2;9
+detective;Leviafan;Boris Akunin;5.84;3;10
+detective;Azazel;Boris Akunin;54.54;4;11
+detective;Sign of three;Conan Doyle;14.8;4;12
+detective;A study in Scarlet;Conan Doyle;14;2;13
+detective;Sherlock Holmes;Arthur Conan Doyle;21;3;14
+detective;The house;Ransome Riggs;13;1;15
+detective;Jack Richer;Li Child;44.35;4;16
+detective;Dissapeared;Gillian Flinn;21.25;2;17
+detective;And once they knock;James Chaze;5;5;18
+detective;The lover of Death;Boris Akunin;5.84;1;19
+history;War and Peace;Lev Tolstoy;54.54;5;20
+history;Pride and Prejudice;Jane Ostin;14.8;3;21
+history;Faust;Iogahn Gete;25.1;1;22
+history;Jane Eyre;Sharlotte Bronte;20;2;23
+history;The Wren;Richard Guntekin;5.84;3;24
+history;Wuthering Heights;Sharlotte Bronte;13.8;4;25
+history;Gone with the Wind;Margaret Mitchell;16.56;5;26
+history;Madame Bovary;Gustav Flober;5.84;5;27
+history;David Copperfield;Charles Dikkens;14.8;3;28
+fiction;The Hobbit;John Tolkin;24.54;5;29
+fiction;The Lord of the Rings;John Tolkin;25.1;4;30
+fiction;The Call of Cthulhu;Howard Phillips;20;4;31
+fiction;The Defiant Agents;Andre Norton;5.84;4;32
+fiction;A Wizard of Earthsea;Ursula LeGuinn;13.8;2;33
+fiction;The Star-Child;Oscar Wilde;16.56;3;34
+fiction;The Phoenix on the Sword;Andre Norton;37.15;5;35
+fiction;Burn. Witch. Burn!;Abraham Merrit;64.2;4;36
+fiction;A Witch Shall Be Born;Abraham Merrit;35.13;5;37
+fiction;Heat of the Night;Silvia Dayt;11.49;2;38
+fiction;These Broken Stars;Emmy Kauphmann;63.51;3;39
+fiction;Titus Alone;Mervin Pick;56.09;1;40
+novel;Why Shoot a Butler?;Goergette Heier;30.46;2;41
+novel;April Lady;Goergette Heier;20.99;1;42
+novel;A Hazard of Hearts;Barbara Cartland;13.8;3;43
+novel;The Black Benedicts;Anita Charles;16.56;5;44
+novel;A Civil Contract;Goergette Heier;19.06;2;45
+novel;The Black Moth;Goergette Heier;32.02;4;46
+novel;The Shadow Queen;Bertris Small;29.66;3;47
+novel;My Theodosia;Ani Seton;37.12;2;48
+novel;Murder Most Royal;Victoria Holt;42.74;1;49
+novel;Jacques;Gorge Sand;25.1;4;50
