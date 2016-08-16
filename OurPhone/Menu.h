@@ -6,20 +6,42 @@ using namespace std;
 class MENU
 {
 private:
-	bool scroll;
+	string _operator;
+	int _internet;
+	int _scroll;
+	int _battery;
+	int _screen;
+	int _blackout;
+	int _off;
 
 public:
-	int color1, color2, color3, color4;
+	int background1, background2, text1, text2;
 
 	MENU();
-	bool GetScroll();
-	void SetScroll(bool);
+	void ReadSettings();
+
+	void WriteSettings();
+
+	string GetOperator();
+	void SetOperator(string);
+	int GetInternet();
+	void SetInternet(int);
+	int GetScroll();
+	void SetScroll(int);
+	int GetBattery();
+	void SetBattery(int);
+	int GetScreen();
+	void SetScreen(int);
+	int GetBlackout();
+	void SetBlackout(int);
+	int GetOff();
+	void SetOff(int);
 
 	void ScreenMode(int, int);
 
-	void PatternForPrint(int, int, string, int);
+	void PatternForPrint(int, int, string, string, int);
 
-	void PrintMainPage(int);
+	void PrintMainScreen(int);
 	void PrintMenu(int);
 	void PrintOptions(int);
 

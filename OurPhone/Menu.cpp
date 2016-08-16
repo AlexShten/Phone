@@ -24,34 +24,10 @@ enum ConsoleColor
 	Yellow = 14,
 	White = 15
 };
-//void SetColor(ConsoleColor text, ConsoleColor background)
-//{
-//	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-//	SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
-//}
 void Set_Color(int text, int background)
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
-}
-
-void Blackout()
-{
-
-}
-
-
-MENU::MENU()
-{
-	scroll = false;
-}
-bool MENU::GetScroll()
-{
-	return scroll;
-}
-void MENU::SetScroll(bool tmp)
-{
-	scroll = tmp;
 }
 
 int GetHour()
@@ -73,6 +49,133 @@ int GetSecond()
 	return LocalTime->tm_sec;
 }
 
+MENU::MENU()
+{
+	string _operator=" ";
+	int _internet=NULL;
+	int _scroll=NULL;
+	int _battery=NULL;
+	int _screen=NULL;
+	int _blackout=NULL;
+	int _off=NULL;
+}
+
+void MENU::ReadSettings()
+{
+	ifstream Fin;
+
+	Fin.open("Settings.txt");
+
+	if (Fin)
+	{
+		while (!Fin.eof())
+		{
+			string temp;
+			getline(Fin, temp);
+			SetOperator(temp);
+
+			getline(Fin, temp);
+			SetInternet(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+			SetScroll(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+			SetBattery(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+			SetScreen(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+			SetBlackout(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+			SetOff(atoi(temp.c_str()));
+
+			getline(Fin, temp);
+		}
+		Fin.close();
+	}
+
+
+}
+void MENU::WriteSettings()
+{
+	ofstream Fout;
+
+	Fout.open("Settings.txt");
+
+	if (Fout)
+	{
+		Fout << this->GetOperator() << endl;
+		Fout << this->GetInternet() << endl;
+		Fout << this->GetScroll() << endl;
+		Fout << this->GetBattery() << endl;
+		Fout << this->GetScreen() << endl;
+		Fout << this->GetBlackout() << endl;
+		Fout << this->GetOff() << endl;		
+	}
+
+	Fout.close();
+}
+
+string MENU::GetOperator()
+{
+	return _operator;
+}
+void MENU::SetOperator(string tmp)
+{
+	_operator = tmp;
+}
+int MENU::GetInternet()
+{
+	return _internet;
+}
+void MENU::SetInternet(int tmp)
+{
+	_internet = tmp;
+}
+int MENU::GetScroll()
+{
+	return _scroll;
+}
+void MENU::SetScroll(int tmp)
+{
+	_scroll = tmp;
+}
+int MENU::GetBattery()
+{
+	return _battery;
+}
+void MENU::SetBattery(int tmp)
+{
+	_battery = tmp;
+}
+int MENU::GetScreen()
+{
+	return _screen;
+}
+void MENU::SetScreen(int tmp)
+{
+	_screen = tmp;
+}
+int MENU::GetBlackout()
+{
+	return _blackout;
+}
+void MENU::SetBlackout(int tmp)
+{
+	_blackout = tmp;
+}
+int MENU::GetOff()
+{
+	return _off;
+}
+void MENU::SetOff(int tmp)
+{
+	_off = tmp;
+}
+
 void MENU::ScreenMode(int width, int height)
 {
 	HANDLE out_handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -81,23 +184,22 @@ void MENU::ScreenMode(int width, int height)
 	SetConsoleWindowInfo(out_handle, true, &src);
 	SetConsoleScreenBufferSize(out_handle, crd);
 }
-
-void MENU::PatternForPrint(int flag, int param, string text, int printParam)
+void MENU::PatternForPrint(int selection, int param, string _text1, string _text2, int printParam)
 {
 	//cout << "\t";
-	//if (flag == param) SetColor(Black, White);
+	//if (selection == param) SetColor(Black, White);
 	//else SetColor(White, Black);
 	//if (printParam == 1) cout << param << ". " << text << endl;
 	//if (printParam == 0) cout << text;
 	//SetColor(White, Black);
 	cout << "\t";
-	if (flag == param) Set_Color(color1, color2);
-	else Set_Color(color3, color4);
-	if (printParam == 1) cout << param << ". " << text << endl;
-	if (printParam == 0) cout << text;
-	Set_Color(color3, color4);
+	if (selection == param) Set_Color(background1, text1);
+	else Set_Color(background2, text2);
+	if (printParam == 1) cout << param << ". " << _text1 <<"  "<< _text2 << endl;
+	if (printParam == 0) cout << _text1 << "  " << _text2;
+	Set_Color(background2, text2);
 }
-void MENU::PrintMainPage(int flag)
+void MENU::PrintMainScreen(int selection)
 {
 	system("cls");
 	cout << "" << endl;
@@ -128,14 +230,13 @@ void MENU::PrintMainPage(int flag)
 	cout << "" << endl;
 	cout << "----------------------------------------------------------" << endl;
 
-	PatternForPrint(flag, 1, " MENU ", 0);
-	cout << "\t";
-	PatternForPrint(flag, 2, " OPTIONS ", 0);
-	PatternForPrint(flag, 3, " BACK ", 0);
+	PatternForPrint(selection, 1, "  MENU", "", 0);
+	PatternForPrint(selection, 2, " OPTIONS", "", 0);
+	PatternForPrint(selection, 3, "  BACK", "", 0);
 
 	cout << "" << endl;
 }
-void MENU::PrintMenu(int flag)
+void MENU::PrintMenu(int selection)
 {
 	system("cls");
 	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<< endl;
@@ -143,24 +244,24 @@ void MENU::PrintMenu(int flag)
 	cout << "MENU..." << endl;
 	cout << "" << endl;
 
-	PatternForPrint(flag, 1, " Telephone book ", 1);
-	PatternForPrint(flag, 2, " SMS ", 1);
-	PatternForPrint(flag, 3, " Calls ", 1);
-	PatternForPrint(flag, 4, " Organizer (+)", 1);
-	PatternForPrint(flag, 5, " Calculator (+)", 1);
-	PatternForPrint(flag, 6, " Games ", 1);
-	PatternForPrint(flag, 7, " Book store (+-)", 1);
+	PatternForPrint(selection, 1, " Telephone book ", "", 1);
+	PatternForPrint(selection, 2, " SMS ", "", 1);
+	PatternForPrint(selection, 3, " Calls ", "", 1);
+	PatternForPrint(selection, 4, " Organizer (+)", "", 1);
+	PatternForPrint(selection, 5, " Calculator (+)", "", 1);
+	PatternForPrint(selection, 6, " Games ", "", 1);
+	PatternForPrint(selection, 7, " Book store (+-)", "", 1);
 
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	cout << "----------------------------------------------------------" << endl;
 
 	cout << "\t\t\t\t";
-	PatternForPrint(flag, 8, " BACK ", 0);
+	PatternForPrint(selection, 8, "  BACK", "", 0);
 
 	cout << "" << endl;
 
 }
-void MENU::PrintOptions(int flag)
+void MENU::PrintOptions(int selection)
 {
 	system("cls");
 	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<< endl;
@@ -168,104 +269,99 @@ void MENU::PrintOptions(int flag)
 	cout << "OPTIONS..." << endl;
 	cout << "" << endl;
 
-	PatternForPrint(flag, 1, " Set operator ", 1);
-	PatternForPrint(flag, 2, " ON/OFF internet ", 1);
-	PatternForPrint(flag, 3, " ON/OFF circular scrolling ", 1);
-	PatternForPrint(flag, 4, " ON/OFF current battery charge ", 1);
+	PatternForPrint(selection, 1, " Set operator: ", this->GetOperator(),1);
+	PatternForPrint(selection, 2, " ON/OFF internet: ",this->GetInternet()==1? "ON":"OFF", 1);
+	PatternForPrint(selection, 3, " ON/OFF circular scrolling: ", this->GetScroll() == 1 ? "ON" : "OFF", 1);
+	PatternForPrint(selection, 4, " ON/OFF current battery charge level: ", this->GetBattery() == 1 ? "ON" : "OFF", 1);
+	PatternForPrint(selection, 5, " ON/OFF backlight off: ", this->GetScreen() == 1 ? "ON" : "OFF", 1);
+	PatternForPrint(selection, 6, " Set time before blackout, sec.: ", to_string(this->GetBlackout()), 1);
+	PatternForPrint(selection, 7, " Set time after blackout to off, sec.: ", to_string(this->GetOff()), 1);
 
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	cout << "----------------------------------------------------------" << endl;
 
 	cout << "\t\t\t\t";
-	PatternForPrint(flag, 5, " BACK ", 0);
+	PatternForPrint(selection, 8, "  BACK", "",0);
 	cout << "" << endl;
 }
-
 void MENU::MainMenu()
 {
-	color1 = 0;
-	color2 = 15;
-	color3 = 15;
-	color4 = 0;
-
 	int key;
-	int flag = 1;
-	int branch = 1;
+	int selection = 1;
+	int screen = 1;
 	int counter = 0;
-	int timer = 0;
-	
+	int timer = 0;	
 
 	Organizer Org;
 	Calculator Calc;
 	Store Shop;
 
-	this->ScreenMode(58, 30);
+	this->ReadSettings();
 
-	this->PrintMainPage(flag);
+	background1 = Black; text1 = White; background2 = White; text2 = Black;
+
+	this->ScreenMode(58, 30);
+	this->PrintMainScreen(selection);
 
 	while (true)
 	{
-
 		Sleep(10);
 		counter++;
-		timer++;
-
+		if(this->GetScreen() == 1) timer++;
 
 		if (_kbhit())
 		{
 			key = _getch();		
 
 			timer = 0;
-			color1 = 0;
-			color2 = 15;
-			color3 = 15;
-			color4 = 0;
 
-			switch (branch)
+			background1 = Black; text1 = White; background2 = White; text2 = Black;
+
+			switch (screen)
 			{
 			case 1://Главный экран
-				if (key == 77) flag++;
-				if (key == 75) flag--;
+				if (key == 77) selection++;
+				if (key == 75) selection--;
 
-				if ((flag == 4 && this->GetScroll() == false) || (flag == 0 && this->GetScroll() == true)) flag = 3;
-				if ((flag == 4 && this->GetScroll() == true) || (flag == 0 && this->GetScroll() == false)) flag = 1;
+				if ((selection == 4 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 3;
+				if ((selection == 4 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
 				if (key == 13)
 				{
-					switch (flag)
+					switch (selection)
 					{
 					case 1:
-						branch = 2;
-						flag = 1;
-						this->PrintMenu(flag);
+						screen = 2;
+						selection = 1;
+						this->PrintMenu(selection);
 						break;
 
 					case 2:
-						branch = 3;
-						flag = 1;
-						this->PrintOptions(flag);
+						screen = 3;
+						selection = 1;
+						this->PrintOptions(selection);
 						break;
 
 					case 3:
-						flag = 1;
-						this->PrintMainPage(flag);
+						selection = 1;
+						this->PrintMainScreen(selection);
 					}
 					break;
 				}
 
-				this->PrintMainPage(flag);
+				this->PrintMainScreen(selection);
 				break;
 
 			case 2://Основное меню
-				if (key == 80) flag++;
-				if (key == 72) flag--;
+				if (key == 80) selection++;
+				if (key == 72) selection--;
 
-				if ((flag == 9 && this->GetScroll() == false) || (flag == 0 && this->GetScroll() == true)) flag = 8;
-				if ((flag == 9 && this->GetScroll() == true) || (flag == 0 && this->GetScroll() == false)) flag = 1;
+				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
+				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
 				if (key == 13)
 				{
-					switch (flag)
+					switch (selection)
 					{
 					case 1:
 
@@ -286,7 +382,7 @@ void MENU::MainMenu()
 						Org.Start();
 
 						this->ScreenMode(58, 30);
-						this->PrintMenu(flag);
+						this->PrintMenu(selection);
 
 						break;
 
@@ -297,7 +393,7 @@ void MENU::MainMenu()
 						Calc.Start();
 
 						this->ScreenMode(58, 30);
-						this->PrintMenu(flag);
+						this->PrintMenu(selection);
 						break;
 
 					case 6:
@@ -310,91 +406,100 @@ void MENU::MainMenu()
 						Shop.ReadFile();
 						Shop.Start();
 
-						this->PrintMenu(flag);
+						this->PrintMenu(selection);
 						break;
 
 					case 8:
-						branch = 1;
-						flag = 1;
-						this->PrintMainPage(flag);
+						screen = 1;
+						selection = 1;
+						this->PrintMainScreen(selection);
 						break;
 					}
 					break;
 				}
 
-				this->PrintMenu(flag);
+				this->PrintMenu(selection);
 				break;
 
 			case 3://Экран настроек
-				if (key == 80) flag++;
-				if (key == 72) flag--;
+				if (key == 80) selection++;
+				if (key == 72) selection--;
 
-				if ((flag == 6 && this->GetScroll() == false) || (flag == 0 && this->GetScroll() == true)) flag = 5;
-				if ((flag == 6 && this->GetScroll() == true) || (flag == 0 && this->GetScroll() == false)) flag = 1;
+				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
+				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
 				if (key == 13)
 				{
-					switch (flag)
+					switch (selection)
 					{
 					case 1:
 
 						break;
 
 					case 2:
-
+						this->GetInternet() == 0 ? this->SetInternet(1) : this->SetInternet(0);
+						this->WriteSettings();
 						break;
 
 					case 3:
-
+						this->GetScroll() == 0 ? this->SetScroll(1) : this->SetScroll(0);
+						this->WriteSettings();
 						break;
 
 					case 4:
-
+						this->GetBattery() == 0 ? this->SetBattery(1) : this->SetBattery(0);
+						this->WriteSettings();
 						break;
 
 					case 5:
-						branch = 1;
-						flag = 1;
-						this->PrintMainPage(flag);
+						this->GetScreen() == 0 ? this->SetScreen(1) : this->SetScreen(0);
+						this->WriteSettings();
+						break;
+
+					case 6:
+
+						break;
+
+					case 7:
+
+						break;
+
+					case 8:
+						screen = 1;
+						selection = 1;
+						this->PrintMainScreen(selection);
 						break;
 					}
 					break;
 				}
 
-				this->PrintOptions(flag);
+				this->PrintOptions(selection);
 				break;
 			}
 		}
 
 
-		if (timer >= 1000)
+		if (timer >= (this->GetBlackout() * 100 + this->GetOff() * 100) && this->GetScreen()==1) system("cls");//условие для отключения экрана при бездействвии
+		else if (counter >= 100)
 		{
-			system("cls");
-		}
-		if (counter >= 100 && timer >= 500 && timer <1000)
-		{
-			color1 = 0;
-			color2 = 7;
-			color3 = 8;
-			color4 = 0;
-			Set_Color(color3, color4);
+			if (timer >= (this->GetBlackout() * 100) && timer < (this->GetBlackout() * 100 + this->GetOff()*100) && this->GetScreen() == 1)//Условие для затемнения шрифта при бездействии в течение времени
+			{
+				background1 = Black; text1 = LightGray; background2 = DarkGray; text2 = Black;
+				Set_Color(background2, text2);
+			}
 
-			if (branch == 1) this->PrintMainPage(flag);
-			if (branch == 2) this->PrintMenu(flag);
-			if (branch == 3) this->PrintOptions(flag);
+			if (timer < (this->GetBlackout()*100))//Обновление экрана каждую секунду для функционирования часов
+			{
+				background1 = Black; text1 = White; background2 = White; text2 = Black;
+				Set_Color(background2, text2);				
+			}
+
+			if (screen == 1) this->PrintMainScreen(selection);
+			if (screen == 2) this->PrintMenu(selection);
+			if (screen == 3) this->PrintOptions(selection);
 			counter = 0;
 		}
-		if (counter >= 100 && timer <500)
-		{
-			color1 = 0;
-			color2 = 15;
-			color3 = 15;
-			color4 = 0;
-			Set_Color(color3, color4);
 
-			if (branch == 2) this->PrintMenu(flag);
-			if (branch == 3) this->PrintOptions(flag);
-			counter = 0;
-		}
+
 	}
 }
