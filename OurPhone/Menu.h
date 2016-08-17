@@ -10,6 +10,7 @@ private:
 	int _internet;
 	int _scroll;
 	int _battery;
+	int _batLev;
 	int _screen;
 	int _blackout;
 	int _off;
@@ -31,6 +32,8 @@ public:
 	void SetScroll(int);
 	int GetBattery();
 	void SetBattery(int);
+	int GetBatLev();
+	void SetBatLev(int);
 	int GetScreen();
 	void SetScreen(int);
 	int GetBlackout();
@@ -42,11 +45,13 @@ public:
 
 	void PatternForPrint(int, int, string, string, int);
 
+	void PrintStatusBar();
+
 	void PrintMainScreen(int);
 	void PrintMenu(int);
 	void PrintOptions(int);
 
-	void MainMenu();
+	int MainMenu();
 };
 
 int GetHour();

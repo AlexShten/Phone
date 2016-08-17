@@ -60,13 +60,14 @@ int GetSecond()
 
 MENU::MENU()
 {
-	string _operator = " ";
-	int _internet = NULL;
-	int _scroll = NULL;
-	int _battery = NULL;
-	int _screen = NULL;
-	int _blackout = NULL;
-	int _off = NULL;
+	_operator = " ";
+	_internet = NULL;
+	_scroll = NULL;
+	_battery = NULL;
+	_batLev = NULL;
+	_screen = NULL;
+	_blackout = NULL;
+	_off = NULL;
 }
 
 void MENU::ReadSettings()
@@ -102,11 +103,12 @@ void MENU::ReadSettings()
 			SetOff(atoi(temp.c_str()));
 
 			getline(Fin, temp);
+			SetBatLev(atoi(temp.c_str()));
+
+			getline(Fin, temp);
 		}
 		Fin.close();
 	}
-
-
 }
 void MENU::WriteSettings()
 {
@@ -123,6 +125,7 @@ void MENU::WriteSettings()
 		Fout << this->GetScreen() << endl;
 		Fout << this->GetBlackout() << endl;
 		Fout << this->GetOff() << endl;
+		Fout << this->GetBatLev() << endl;
 	}
 
 	Fout.close();
@@ -159,6 +162,14 @@ int MENU::GetBattery()
 void MENU::SetBattery(int tmp)
 {
 	_battery = tmp;
+}
+int MENU::GetBatLev()
+{
+	return _batLev;
+}
+void MENU::SetBatLev(int tmp)
+{
+	_batLev = tmp;
 }
 int MENU::GetScreen()
 {
@@ -206,6 +217,13 @@ void MENU::PatternForPrint(int selection, int param, string _text1, string _text
 	if (printParam == 0) cout << _text1 << "  " << _text2;
 	Set_Color(background2, text2);
 }
+void MENU::PrintStatusBar()
+{
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond() << "  ";
+	cout << "\t" << this->GetOperator();
+	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
+	cout << "\t" << (this->GetBattery() == 1 ? " " + to_string(this->GetBatLev()) + "%" : " ");
+}
 void MENU::PrintMainScreen(int selection)
 {
 	system("cls");
@@ -246,9 +264,8 @@ void MENU::PrintMainScreen(int selection)
 void MENU::PrintMenu(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond() << "  ";
-	cout << "\t" << this->GetOperator();
-	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
+
+	this->PrintStatusBar();
 
 	cout << endl;
 	cout << "----------------------------------------------------------" << endl;
@@ -288,9 +305,8 @@ void MENU::PrintMenu(int selection)
 void MENU::PrintOptions(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<<"  ";
-	cout << "\t" << this->GetOperator();
-	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
+	
+	this->PrintStatusBar();
 
 	cout << endl;
 	cout << "----------------------------------------------------------" << endl;
@@ -314,12 +330,13 @@ void MENU::PrintOptions(int selection)
 	cout << "" << endl;
 }
 
-void MENU::MainMenu()
+int MENU::MainMenu()
 {
 	int key;
 	int selection = 1;
 	int screen = 1;
 	int counter = 0;
+	int counterBat = 0;
 	int timer = 0;
 	int editFlag = 0;
 	errMes = 0;
@@ -573,7 +590,6 @@ void MENU::MainMenu()
 			}
 		}
 
-
 		if (timer >= (this->GetBlackout() * 100 + this->GetOff() * 100) && this->GetScreen() == 1) system("cls");//условие для отключения экрана при бездействвии
 		else if (counter >= 100)
 		{
@@ -589,11 +605,22 @@ void MENU::MainMenu()
 				Set_Color(background2, text2);
 			}
 
+			counterBat++;
+			cout << counterBat;
+			if (counterBat == 30)
+			{
+				this->SetBatLev(this->GetBatLev() - 1);
+
+				if (this->GetBatLev() == 0) return 0;
+
+				counterBat = 0;
+				this->WriteSettings();
+			}
+
 			if (screen == 1) this->PrintMainScreen(selection);
 			if (screen == 2) this->PrintMenu(selection);
 			if (screen == 3) this->PrintOptions(selection);
 			counter = 0;
-		}
-				
+		}				
 	}
 }
