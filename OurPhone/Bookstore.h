@@ -55,4 +55,5 @@ public:
 	void BookMenu(int);
 	void GenreMenu();
 	void GenreBooks(int);
+	void Finish();
 };
