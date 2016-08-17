@@ -199,12 +199,6 @@ void MENU::ScreenMode(int width, int height)
 }
 void MENU::PatternForPrint(int selection, int param, string _text1, string _text2, int printParam)
 {
-	//cout << "\t";
-	//if (selection == param) SetColor(Black, White);
-	//else SetColor(White, Black);
-	//if (printParam == 1) cout << param << ". " << text << endl;
-	//if (printParam == 0) cout << text;
-	//SetColor(White, Black);
 	cout << "\t";
 	if (selection == param) Set_Color(background1, text1);
 	else Set_Color(background2, text2);
@@ -252,7 +246,7 @@ void MENU::PrintMainScreen(int selection)
 void MENU::PrintMenu(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond();
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond() << "  ";
 	cout << "\t" << this->GetOperator();
 	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
 
@@ -294,7 +288,7 @@ void MENU::PrintMenu(int selection)
 void MENU::PrintOptions(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond();
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond()<<"  ";
 	cout << "\t" << this->GetOperator();
 	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
 
@@ -409,7 +403,7 @@ void MENU::MainMenu()
 						break;
 
 					case 2://SMS
-						if (this->GetOperator() != " ")
+						if (this->GetOperator() != "no sim")
 						{
 							system("cls");
 							//---------------
@@ -420,7 +414,7 @@ void MENU::MainMenu()
 						break;
 
 					case 3://Calls
-						if (this->GetOperator() != " ")
+						if (this->GetOperator() != "no sim")
 						{
 							system("cls");
 							//---------------
