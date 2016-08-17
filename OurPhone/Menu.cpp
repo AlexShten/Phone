@@ -5,6 +5,15 @@ using namespace std;
 struct tm *LocalTime;
 time_t t;
 
+enum Keys
+{
+	up = 75,
+	down = 80,
+	left = 75,
+	right = 77,
+	enter = 13,
+};
+
 enum ConsoleColor
 {
 	Black = 0,
@@ -165,6 +174,7 @@ int MENU::GetBlackout()
 }
 void MENU::SetBlackout(int tmp)
 {
+	if (tmp < 1) tmp = 1;
 	_blackout = tmp;
 }
 int MENU::GetOff()
@@ -173,6 +183,7 @@ int MENU::GetOff()
 }
 void MENU::SetOff(int tmp)
 {
+	if (tmp < 1) tmp = 1;
 	_off = tmp;
 }
 
@@ -276,12 +287,13 @@ void MENU::PrintOptions(int selection)
 	PatternForPrint(selection, 5, " ON/OFF backlight off: ", this->GetScreen() == 1 ? "ON" : "OFF", 1);
 	PatternForPrint(selection, 6, " Set time before blackout, sec.: ", to_string(this->GetBlackout()), 1);
 	PatternForPrint(selection, 7, " Set time after blackout to off, sec.: ", to_string(this->GetOff()), 1);
+	PatternForPrint(selection, 8, " Set default settings ", "", 1);
 
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	cout << "----------------------------------------------------------" << endl;
 
 	cout << "\t\t\t\t";
-	PatternForPrint(selection, 8, "  BACK", "",0);
+	PatternForPrint(selection, 9, "  BACK", "",0);
 	cout << "" << endl;
 }
 void MENU::MainMenu()
@@ -291,6 +303,7 @@ void MENU::MainMenu()
 	int screen = 1;
 	int counter = 0;
 	int timer = 0;	
+	int editFlag = 0;
 
 	Organizer Org;
 	Calculator Calc;
@@ -320,13 +333,13 @@ void MENU::MainMenu()
 			switch (screen)
 			{
 			case 1://Главный экран
-				if (key == 77) selection++;
-				if (key == 75) selection--;
+				if (key == right) selection++;
+				if (key == left) selection--;
 
 				if ((selection == 4 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 3;
 				if ((selection == 4 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
-				if (key == 13)
+				if (key == enter)
 				{
 					switch (selection)
 					{
@@ -353,13 +366,13 @@ void MENU::MainMenu()
 				break;
 
 			case 2://Основное меню
-				if (key == 80) selection++;
-				if (key == 72) selection--;
+				if (key == down) selection++;
+				if (key == up) selection--;
 
 				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
 				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
-				if (key == 13)
+				if (key == enter)
 				{
 					switch (selection)
 					{
@@ -422,13 +435,13 @@ void MENU::MainMenu()
 				break;
 
 			case 3://Экран настроек
-				if (key == 80) selection++;
-				if (key == 72) selection--;
+				if (key == down && editFlag == 0) selection++;
+				if (key == up && editFlag == 0) selection--;
 
-				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
-				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
+				if ((selection == 10 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 9;
+				if ((selection == 10 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
-				if (key == 13)
+				if (key == enter)
 				{
 					switch (selection)
 					{
@@ -457,22 +470,51 @@ void MENU::MainMenu()
 						break;
 
 					case 6:
-
+						editFlag == 0 ? editFlag = 1 : editFlag = 0;
 						break;
 
 					case 7:
-
+						editFlag == 0 ? editFlag = 1 : editFlag = 0;
+						break;
+						
+					case 8:
+						this->SetInternet(0);
+						this->SetScroll(0);
+						this->SetBattery(0);
+						this->SetScreen(1);
+						this->SetBlackout(5);
+						this->SetOff(5);
+						this->WriteSettings();
 						break;
 
-					case 8:
+					case 9:
 						screen = 1;
 						selection = 1;
 						this->PrintMainScreen(selection);
 						break;
 					}
+					
+					if (editFlag == 1)
+					{
+						switch (selection)
+						{
+						case 1:
+							
+							break;
+							
+						case 6:
+							if (key == down) SetOff(GetOff()-1);
+							if (key == up) SetOff(GetOff()+1);
+							break
+							
+						case 7:
+							if (key == down) SetOff(GetOff()-1);
+							if (key == up) SetOff(GetOff()+1);
+							break;
+					}
 					break;
 				}
-
+				
 				this->PrintOptions(selection);
 				break;
 			}
