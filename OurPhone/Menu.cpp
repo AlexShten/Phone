@@ -505,11 +505,13 @@ void MENU::MainMenu()
 						case 6:
 							if (key == down) SetOff(GetOff()-1);
 							if (key == up) SetOff(GetOff()+1);
+							this->WriteSettings();
 							break
 							
 						case 7:
 							if (key == down) SetOff(GetOff()-1);
 							if (key == up) SetOff(GetOff()+1);
+							this->WriteSettings();
 							break;
 					}
 					break;
