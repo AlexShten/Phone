@@ -6,7 +6,7 @@ int main()
 {
 	MENU a;
 
-	cout << "Enter any key to start: ";
+	cout << "Press any key to start: ";
 	_getch();
 	system("cls");
 

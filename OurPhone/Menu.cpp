@@ -7,10 +7,10 @@ time_t t;
 
 enum Keys
 {
-	up = 72,
-	down = 80,
-	left = 75,
-	right = 77,
+	_up = 72,
+	_down = 80,
+	_left = 75,
+	_right = 77,
 	enter = 13
 };
 
@@ -175,6 +175,7 @@ int MENU::GetBlackout()
 void MENU::SetBlackout(int tmp)
 {
 	if (tmp < 1) tmp = 1;
+	if (tmp > 100) tmp = 100;
 	_blackout = tmp;
 }
 int MENU::GetOff()
@@ -184,6 +185,7 @@ int MENU::GetOff()
 void MENU::SetOff(int tmp)
 {
 	if (tmp < 1) tmp = 1;
+	if (tmp > 100) tmp = 100;
 	_off = tmp;
 }
 
@@ -334,8 +336,8 @@ void MENU::MainMenu()
 			switch (screen)
 			{
 			case 1://Главный экран
-				if (key == 77) selection++;
-				if (key == 75) selection--;
+				if (key == _right) selection++;
+				if (key == _left) selection--;
 
 				if ((selection == 4 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 3;
 				if ((selection == 4 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
@@ -367,8 +369,8 @@ void MENU::MainMenu()
 				break;
 
 			case 2://Основное меню
-				if (key == down) selection++;
-				if (key == up) selection--;
+				if (key == _down) selection++;
+				if (key == _up) selection--;
 
 				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
 				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
@@ -436,12 +438,12 @@ void MENU::MainMenu()
 				break;
 
 			case 3://Экран настроек
-				if (key == down && editFlag == 0)
+				if (key == _down && editFlag == 0)
 				{
 					selection++;
 					if (this->GetScreen() == 0 && selection == 6) selection += 2;//Пропуск настроек времени при неактивном пункте "Экран"
 				}
-				if (key == up && editFlag == 0)
+				if (key == _up && editFlag == 0)
 				{
 					selection--;
 					if (this->GetScreen() == 0 && selection == 7) selection -= 2;//Пропуск настроек времени при неактивном пункте "Экран"
@@ -502,10 +504,10 @@ void MENU::MainMenu()
 						this->PrintMainScreen(selection);
 						break;
 					}
-					break;
+					//break;
 				}
 
-				if (editFlag == 1)//Установа времени перед гашением и отключением экрана, в случае активации пункта "Экран"
+				if (editFlag == 1)//Установка времени перед гашением и отключением экрана, в случае активации пункта "Экран"
 				{
 					switch (selection)
 					{
@@ -514,23 +516,21 @@ void MENU::MainMenu()
 						break;
 
 					case 6:
-						if (key == down) SetBlackout(GetBlackout() - 1);
-						if (key == up) SetBlackout(GetBlackout() + 1);
+						if (key == _down) SetBlackout(GetBlackout() - 1);
+						if (key == _up) SetBlackout(GetBlackout() + 1);
 						this->WriteSettings();
 						break;
 
 					case 7:
-						if (key == down) SetOff(GetOff() - 1);
-						if (key == up) SetOff(GetOff() + 1);
+						if (key == _down) SetOff(GetOff() - 1);
+						if (key == _up) SetOff(GetOff() + 1);
 						this->WriteSettings();
 						break;
 					}
-				}
-				
+				}				
 
 				this->PrintOptions(selection);
-				break;
-				
+				break;				
 			}
 		}
 
@@ -546,8 +546,8 @@ void MENU::MainMenu()
 
 			if (timer < (this->GetBlackout() * 100))//Обновление экрана каждую секунду для функционирования часов
 			{
-				//background1 = Black; text1 = White; background2 = White; text2 = Black;
-				//Set_Color(background2, text2);
+				background1 = Black; text1 = White; background2 = White; text2 = Black;
+				Set_Color(background2, text2);
 			}
 
 			if (screen == 1) this->PrintMainScreen(selection);
