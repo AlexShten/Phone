@@ -343,19 +343,19 @@ void MENU::MainMenu()
 				{
 					switch (selection)
 					{
-					case 1:
+					case 1://MENU
 						screen = 2;
 						selection = 1;
 						this->PrintMenu(selection);
 						break;
 
-					case 2:
+					case 2://OPTIONS
 						screen = 3;
 						selection = 1;
 						this->PrintOptions(selection);
 						break;
 
-					case 3:
+					case 3://BACK
 						selection = 1;
 						this->PrintMainScreen(selection);
 					}
@@ -376,19 +376,19 @@ void MENU::MainMenu()
 				{
 					switch (selection)
 					{
-					case 1:
+					case 1://Telephone book
 
 						break;
 
-					case 2:
+					case 2://SMS
 
 						break;
 
-					case 3:
+					case 3://Calls
 
 						break;
 
-					case 4:
+					case 4://Organizer
 						system("cls");
 						this->ScreenMode(75, 30);
 
@@ -399,7 +399,7 @@ void MENU::MainMenu()
 
 						break;
 
-					case 5:
+					case 5://Calculator
 						system("cls");
 						this->ScreenMode(75, 30);
 
@@ -409,11 +409,11 @@ void MENU::MainMenu()
 						this->PrintMenu(selection);
 						break;
 
-					case 6:
+					case 6://Games
 
 						break;
 
-					case 7:
+					case 7://Book store
 						system("cls");
 
 						Shop.ReadFile();
@@ -422,7 +422,7 @@ void MENU::MainMenu()
 						this->PrintMenu(selection);
 						break;
 
-					case 8:
+					case 8://BACK
 						screen = 1;
 						selection = 1;
 						this->PrintMainScreen(selection);
@@ -435,49 +435,57 @@ void MENU::MainMenu()
 				break;
 
 			case 3://Экран настроек
-				if (key == down && editFlag == 0) selection++;
-				if (key == up && editFlag == 0) selection--;
+				if (key == down && editFlag == 0)
+				{
+					selection++;
+					if (this->GetScroll() == 0 || selection == 6) selection+=2;//Пропуск настроек времени при неактивном пункте "Экран"
+				}
+				if (key == up && editFlag == 0) 
+				{
+					selection--;
+					if (this->GetScroll() == 0 || selection == 7) selection-=2;//Пропуск настроек времени при неактивном пункте "Экран"
+				}
 
-				if ((selection == 10 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 9;
+				if ((selection == 10 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 9;//Реализация круговой прокрутки
 				if ((selection == 10 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
 				if (key == enter)
 				{
 					switch (selection)
 					{
-					case 1:
+					case 1://Set operator
 
 						break;
 
-					case 2:
+					case 2://ON/OFF internet
 						this->GetInternet() == 0 ? this->SetInternet(1) : this->SetInternet(0);
 						this->WriteSettings();
 						break;
 
-					case 3:
+					case 3://ON/OFF circular scrolling
 						this->GetScroll() == 0 ? this->SetScroll(1) : this->SetScroll(0);
 						this->WriteSettings();
 						break;
 
-					case 4:
+					case 4://ON/OFF current battery charge level
 						this->GetBattery() == 0 ? this->SetBattery(1) : this->SetBattery(0);
 						this->WriteSettings();
 						break;
 
-					case 5:
+					case 5://ON/OFF backlight off
 						this->GetScreen() == 0 ? this->SetScreen(1) : this->SetScreen(0);
 						this->WriteSettings();
 						break;
 
-					case 6:
+					case 6://Set time before blackout
 						editFlag == 0 ? editFlag = 1 : editFlag = 0;
 						break;
 
-					case 7:
+					case 7://Set time after blackout to off
 						editFlag == 0 ? editFlag = 1 : editFlag = 0;
 						break;
 						
-					case 8:
+					case 8://Set default settings
 						this->SetInternet(0);
 						this->SetScroll(0);
 						this->SetBattery(0);
@@ -487,14 +495,14 @@ void MENU::MainMenu()
 						this->WriteSettings();
 						break;
 
-					case 9:
+					case 9://BACK
 						screen = 1;
 						selection = 1;
 						this->PrintMainScreen(selection);
 						break;
 					}
 					
-					if (editFlag == 1)
+					if (editFlag == 1)//Установа времени перед гашением и отключением экрана, в случае активации пункта "Экран"
 					{
 						switch (selection)
 						{
