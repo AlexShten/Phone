@@ -424,385 +424,385 @@ void Store::AddToCart(float price)
 }
 void Store::Start()
 {
-		int menuSelect;
-		cout << "\t\tCART: " << _cart << '$' << endl;
-		cout << "_______________________________\n";
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "1 - Show by Genre" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "2 - Search by author" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "3 - Search book title" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "4 - Show popular" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "5 - Show all" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << " 0 - Exit\n";
-		cin >> menuSelect;
-		char str[100];
-		switch (menuSelect)
-		{
-		case 1:
-			system("cls");
-			GenreMenu();
-			break;
-		case 2:
-			cout << "Input author name: ";
-			cin.ignore();
-			gets_s(str, 100);
-			system("cls");
-			SearchAuthor(str);
-			break;
-		case 3:
-			cout << "Input book title: ";
-			cin.ignore();
-			gets_s(str, 100);
-			system("cls");
-			SearchName(str);
-			break;
-		case 4:
-			system("cls");
-			SortRaiting();
-			break;
-		case 5:
-			system("cls");
-			ShowList(0); 
-			break;
-		case 0:
-			system("cls");
-			Finish();
-			break;
-		default:
-			system("cls");
-			Finish();
-			break;
-		}
+	int menuSelect;
+	cout << "\t\tCART: " << _cart << '$' << endl;
+	cout << "_______________________________\n";
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "1 - Show by Genre" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "2 - Search by author" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "3 - Search book title" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "4 - Show popular" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "5 - Show all" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << " 0 - Exit\n";
+	cin >> menuSelect;
+	char str[100];
+	switch (menuSelect)
+	{
+	case 1:
+		system("cls");
+		GenreMenu();
+		break;
+	case 2:
+		cout << "Input author name: ";
+		cin.ignore();
+		gets_s(str, 100);
+		system("cls");
+		SearchAuthor(str);
+		break;
+	case 3:
+		cout << "Input book title: ";
+		cin.ignore();
+		gets_s(str, 100);
+		system("cls");
+		SearchName(str);
+		break;
+	case 4:
+		system("cls");
+		SortRaiting();
+		break;
+	case 5:
+		system("cls");
+		ShowList(0); 
+		break;
+	case 0:
+		system("cls");
+		Finish();
+		break;
+	default:
+		system("cls");
+		Finish();
+		break;
+	}
 }
 void Store::BookMenu(int id)
 {
-		int i = 0;
-		for (; i < arr.size(); i++)
+	int i = 0;
+	for (; i < arr.size(); i++)
+	{
+		if (arr[i].getID() == id)
 		{
-			if (arr[i].getID() == id)
-			{
-				arr[i].PrintBook();
-				break;
-			}
+			arr[i].PrintBook();
+			break;
 		}
-		char choise;
-		cout << "B - back   $ - buy this book\n";
-		cout << " 0 - Exit\n";
-		cin >> choise;
-		if (choise == 'b' || choise == 'B')
-		{
-			system("cls");
-			Start();
-		}
-		if (choise == '$')
-		{
-			AddToCart(arr[i].getPrice());
-			system("cls");
-			Start();
-		}
-		if (choise == '0')
-		{
-			system("cls");
-			Finish();
-		}
+	}
+	char choise;
+	cout << "B - back   $ - buy this book\n";
+	cout << " 0 - Exit\n";
+	cin >> choise;
+	if (choise == 'b' || choise == 'B')
+	{
+		system("cls");
+		Start();
+	}
+	if (choise == '$')
+	{
+		AddToCart(arr[i].getPrice());
+		system("cls");
+		Start();
+	}
+	if (choise == '0')
+	{
+		system("cls");
+		Finish();
+	}
 }
 void Store::GenreMenu()
 {
-		int selectGenre;
-		cout << "\t\tCART: " << _cart << '$' << endl;
-		cout << "_______________________________\n";
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "1 - Fantasy" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "2 - Detective" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "3 - Fiction" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "4 - History" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << endl;
-		cout << "5 - Novel" << endl;
-		cout << endl;
-		cout << "_______________________________\n";
-		cout << "0 - Exit\n" << endl;
-		cout << "choose genre" << endl;
-		cin >> selectGenre;
-		GenreBooks(selectGenre);
+	int selectGenre;
+	cout << "\t\tCART: " << _cart << '$' << endl;
+	cout << "_______________________________\n";
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "1 - Fantasy" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "2 - Detective" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "3 - Fiction" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "4 - History" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << endl;
+	cout << "5 - Novel" << endl;
+	cout << endl;
+	cout << "_______________________________\n";
+	cout << "0 - Exit\n" << endl;
+	cout << "choose genre" << endl;
+	cin >> selectGenre;
+	GenreBooks(selectGenre);
 }
 void Store::GenreBooks(int gen)
 {
-		char choose[3];
-		switch (gen)
+	char choose[3];
+	switch (gen)
+	{
+	case 1:
+		system("cls");
+		ShowFantasy(_page);
+		cout << "# book:\n(B - back  H - home  N - next)\n";
+		cout << "0 - Exit\n";
+		cin >> choose;
+		if (choose[0] == 'n' || choose[0] == 'N')
 		{
-		case 1:
 			system("cls");
-			ShowFantasy(_page);
-			cout << "# book:\n(B - back  H - home  N - next)\n";
-			cout << "0 - Exit\n";
-			cin >> choose;
-			if (choose[0] == 'n' || choose[0] == 'N')
-			{
-				system("cls");
-				++_page;
-				GenreBooks(gen);
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
-			{
-				system("cls");
-				GenreMenu();
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
-			{
-				system("cls");
-				--_page;
-				GenreBooks(gen);
-			}
-			if (choose[0] == 'h' || choose[0] == 'H')
-			{
-				system("cls");
-				_page = 0;
-				Start();
-			}
-			if (choose[0] == '0')
-			{
-				system("cls");
-				Finish();
-			}
-			else if (atoi(choose) < arr.size())
-			{
-				system("cls");
-				BookMenu(atoi(choose));
-			}
-			else
-			{
-				cout << "Error: Wrong choise!";
-				Sleep(2000);
-				system("cls");
-				GenreBooks(gen);
-			}
-			break;
-		case 2:
+			++_page;
+			GenreBooks(gen);
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
+		{
 			system("cls");
-			ShowDetective(_page);
-			cout << "# book:\n(B - back  H - home  N - next page)\n";
-			cout << "0 - Exit\n";
-			cin >> choose;
-			if (choose[0] == 'n' || choose[0] == 'N')
-			{
-				system("cls");
-				++_page;
-				GenreBooks(gen);
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
-			{
-				system("cls");
-				GenreMenu();
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
-			{
-				system("cls");
-				--_page;
-				GenreBooks(gen);
-			}
-			if (choose[0] == 'h' || choose[0] == 'H')
-			{
-				system("cls");
-				_page = 0;
-				Start();
-			}
-			if (choose[0] == '0')
-			{
-				system("cls");
-				Finish();
-			}
-			else if (atoi(choose) < arr.size())
-			{
-				system("cls");
-				BookMenu(atoi(choose));
-			}
-			else
-			{
-				cout << "Error: Wrong choise!";
-				Sleep(2000);
-				system("cls");
-				GenreBooks(gen);
-			}
-			break;
-		case 3:
+			GenreMenu();
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
+		{
 			system("cls");
-			ShowFiction(_page);
-			cout << "# book:\n(B - back  H - home  N - next page)\n";
-			cout << "0 - Exit\n";
-			cin >> choose;
-			if (choose[0] == 'n' || choose[0] == 'N')
-			{
-				system("cls");
-				++_page;
-				GenreBooks(gen);
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
-			{
-				system("cls");
-				GenreMenu();
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
-			{
-				system("cls");
-				--_page;
-				GenreBooks(gen);
-			}
-			if (choose[0] == 'h' || choose[0] == 'H')
-			{
-				system("cls");
-				_page = 0;
-				Start();
-			}
-			if (choose[0] == '0')
-			{
-				system("cls");
-				Finish();
-			}
-			else if (atoi(choose) < arr.size())
-			{
-				system("cls");
-				BookMenu(atoi(choose));
-			}
-			else
-			{
-				cout << "Error: Wrong choise!";
-				Sleep(2000);
-				system("cls");
-				GenreBooks(gen);
-			}
-			break;
-		case 4:
+			--_page;
+			GenreBooks(gen);
+		}
+		if (choose[0] == 'h' || choose[0] == 'H')
+		{
 			system("cls");
-			ShowHistory(_page);
-			cout << "# book:\n(B - back  H - home  N - next page)\n";
-			cout << "0 - Exit\n";
-			cin >> choose;
-			if (choose[0] == 'n' || choose[0] == 'N')
-			{
-				system("cls");
-				++_page;
-				GenreBooks(gen);
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
-			{
-				system("cls");
-				GenreMenu();
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
-			{
-				system("cls");
-				--_page;
-				GenreBooks(gen);
-			}
-			if (choose[0] == 'h' || choose[0] == 'H')
-			{
-				system("cls");
-				_page = 0;
-				Start();
-			}
-			if (choose[0] == '0')
-			{
-				system("cls");
-				Finish();
-			}
-			else if (atoi(choose) < arr.size())
-			{
-				system("cls");
-				BookMenu(atoi(choose));
-			}
-			else
-			{
-				cout << "Error: Wrong choise!";
-				Sleep(2000);
-				system("cls");
-				GenreBooks(gen);
-			}
-			break;
-		case 5:
-			system("cls");
-			ShowNovel(_page);
-			cout << "# book:\n(B - back  H - home  N - next page)\n";
-			cout << "0 - Exit\n";
-			cin >> choose;
-			if (choose[0] == 'n' || choose[0] == 'N')
-			{
-				system("cls");
-				++_page;
-				GenreBooks(gen);
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
-			{
-				system("cls");
-				GenreMenu();
-			}
-			if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
-			{
-				system("cls");
-				--_page;
-				GenreBooks(gen);
-			}
-			if (choose[0] == 'h' || choose[0] == 'H')
-			{
-				system("cls");
-				_page = 0;
-				Start();
-			}
-			if (choose[0] == '0')
-			{
-				system("cls");
-				Finish();
-			}
-			else if (atoi(choose) < arr.size())
-			{
-				system("cls");
-				BookMenu(atoi(choose));
-			}
-			else
-			{
-				cout << "Error: Wrong choise!";
-				Sleep(2000);
-				system("cls");
-				GenreBooks(gen);
-			}
-			break;
-		case 0:
+			_page = 0;
+			Start();
+		}
+		if (choose[0] == '0')
+		{
 			system("cls");
 			Finish();
-			break;
-		default:
-			system("cls");
-			Start();
-			break;
 		}
+		else if (atoi(choose) < arr.size())
+		{
+			system("cls");
+			BookMenu(atoi(choose));
+		}
+		else
+		{
+			cout << "Error: Wrong choise!";
+			Sleep(2000);
+			system("cls");
+			GenreBooks(gen);
+		}
+		break;
+	case 2:
+		system("cls");
+		ShowDetective(_page);
+		cout << "# book:\n(B - back  H - home  N - next page)\n";
+		cout << "0 - Exit\n";
+		cin >> choose;
+		if (choose[0] == 'n' || choose[0] == 'N')
+		{
+			system("cls");
+			++_page;
+			GenreBooks(gen);
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
+		{
+			system("cls");
+			GenreMenu();
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
+		{
+			system("cls");
+			--_page;
+			GenreBooks(gen);
+		}
+		if (choose[0] == 'h' || choose[0] == 'H')
+		{
+			system("cls");
+			_page = 0;
+			Start();
+		}
+		if (choose[0] == '0')
+		{
+			system("cls");
+			Finish();
+		}
+		else if (atoi(choose) < arr.size())
+		{
+			system("cls");
+			BookMenu(atoi(choose));
+		}
+		else
+		{
+			cout << "Error: Wrong choise!";
+			Sleep(2000);
+			system("cls");
+			GenreBooks(gen);
+		}
+		break;
+	case 3:
+		system("cls");
+		ShowFiction(_page);
+		cout << "# book:\n(B - back  H - home  N - next page)\n";
+		cout << "0 - Exit\n";
+		cin >> choose;
+		if (choose[0] == 'n' || choose[0] == 'N')
+		{
+			system("cls");
+			++_page;
+			GenreBooks(gen);
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
+		{
+			system("cls");
+			GenreMenu();
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
+		{
+			system("cls");
+			--_page;
+			GenreBooks(gen);
+		}
+		if (choose[0] == 'h' || choose[0] == 'H')
+		{
+			system("cls");
+			_page = 0;
+			Start();
+		}
+		if (choose[0] == '0')
+		{
+			system("cls");
+			Finish();
+		}
+		else if (atoi(choose) < arr.size())
+		{
+			system("cls");
+			BookMenu(atoi(choose));
+		}
+		else
+		{
+			cout << "Error: Wrong choise!";
+			Sleep(2000);
+			system("cls");
+			GenreBooks(gen);
+		}
+		break;
+	case 4:
+		system("cls");
+		ShowHistory(_page);
+		cout << "# book:\n(B - back  H - home  N - next page)\n";
+		cout << "0 - Exit\n";
+		cin >> choose;
+		if (choose[0] == 'n' || choose[0] == 'N')
+		{
+			system("cls");
+			++_page;
+			GenreBooks(gen);
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
+		{
+			system("cls");
+			GenreMenu();
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
+		{
+			system("cls");
+			--_page;
+			GenreBooks(gen);
+		}
+		if (choose[0] == 'h' || choose[0] == 'H')
+		{
+			system("cls");
+			_page = 0;
+			Start();
+		}
+		if (choose[0] == '0')
+		{
+			system("cls");
+			Finish();
+		}
+		else if (atoi(choose) < arr.size())
+		{
+			system("cls");
+			BookMenu(atoi(choose));
+		}
+		else
+		{
+			cout << "Error: Wrong choise!";
+			Sleep(2000);
+			system("cls");
+			GenreBooks(gen);
+		}
+		break;
+	case 5:
+		system("cls");
+		ShowNovel(_page);
+		cout << "# book:\n(B - back  H - home  N - next page)\n";
+		cout << "0 - Exit\n";
+		cin >> choose;
+		if (choose[0] == 'n' || choose[0] == 'N')
+		{
+			system("cls");
+			++_page;
+			GenreBooks(gen);
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page == 0)
+		{
+			system("cls");
+			GenreMenu();
+		}
+		if ((choose[0] == 'b' || choose[0] == 'B') && _page > 0)
+		{
+			system("cls");
+			--_page;
+			GenreBooks(gen);
+		}
+		if (choose[0] == 'h' || choose[0] == 'H')
+		{
+			system("cls");
+			_page = 0;
+			Start();
+		}
+		if (choose[0] == '0')
+		{
+			system("cls");
+			Finish();
+		}
+		else if (atoi(choose) < arr.size())
+		{
+			system("cls");
+			BookMenu(atoi(choose));
+		}
+		else
+		{
+			cout << "Error: Wrong choise!";
+			Sleep(2000);
+			system("cls");
+			GenreBooks(gen);
+		}
+		break;
+	case 0:
+		system("cls");
+		Finish();
+		break;
+	default:
+		system("cls");
+		Start();
+		break;
+	}
 }
 void Store:: Finish()
 {
-		cout << "Bye , bey" << endl;
+	cout << "Bye , bey" << endl;
 }
