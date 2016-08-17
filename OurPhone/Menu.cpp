@@ -413,7 +413,6 @@ void MENU::MainMenu()
 						screen = 1;
 						selection = 1;
 						this->PrintMainScreen(selection);
-						break;
 					}
 					break;
 				}
@@ -433,7 +432,7 @@ void MENU::MainMenu()
 					switch (selection)
 					{
 					case 1:
-
+						
 						break;
 
 					case 2:
@@ -468,11 +467,9 @@ void MENU::MainMenu()
 						screen = 1;
 						selection = 1;
 						this->PrintMainScreen(selection);
-						break;
 					}
 					break;
 				}
-
 				this->PrintOptions(selection);
 				break;
 			}
