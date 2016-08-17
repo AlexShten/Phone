@@ -252,7 +252,11 @@ void MENU::PrintMainScreen(int selection)
 void MENU::PrintMenu(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond() << endl;
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond();
+	cout << "\t" << this->GetOperator();
+	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
+
+	cout << endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "MENU..." << endl;
 	cout << "" << endl;
@@ -263,9 +267,22 @@ void MENU::PrintMenu(int selection)
 	PatternForPrint(selection, 4, " Organizer (+)", "", 1);
 	PatternForPrint(selection, 5, " Calculator (+)", "", 1);
 	PatternForPrint(selection, 6, " Games ", "", 1);
-	PatternForPrint(selection, 7, " Book store (+-)", "", 1);
+	PatternForPrint(selection, 7, " Book store (+)", "", 1);
 
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	switch (errMes)
+	{
+	case 0:
+		cout << "\n";
+		break;
+
+	case 1:
+		cout << " !!! For calls and messages set operator (OPTIONS) " << endl;
+		break;
+
+	case 2:
+		cout << " !!! To access enable internet (OPTIONS) " << endl;
+	}
 	cout << "----------------------------------------------------------" << endl;
 
 	cout << "\t\t\t\t";
@@ -277,7 +294,11 @@ void MENU::PrintMenu(int selection)
 void MENU::PrintOptions(int selection)
 {
 	system("cls");
-	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond() << endl;
+	cout << GetHour() << ":" << GetMinute() << ":" << GetSecond();
+	cout << "\t" << this->GetOperator();
+	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
+
+	cout << endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "OPTIONS..." << endl;
 	cout << "" << endl;
@@ -307,6 +328,7 @@ void MENU::MainMenu()
 	int counter = 0;
 	int timer = 0;
 	int editFlag = 0;
+	errMes = 0;
 
 	Organizer Org;
 	Calculator Calc;
@@ -372,6 +394,8 @@ void MENU::MainMenu()
 				if (key == _down) selection++;
 				if (key == _up) selection--;
 
+				errMes = 0;
+
 				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
 				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
 
@@ -381,14 +405,29 @@ void MENU::MainMenu()
 					{
 					case 1://Telephone book
 
+
 						break;
 
 					case 2://SMS
+						if (this->GetOperator() != " ")
+						{
+							system("cls");
+							//---------------
+
+						}
+						else errMes = 1;
 
 						break;
 
 					case 3://Calls
+						if (this->GetOperator() != " ")
+						{
+							system("cls");
+							//---------------
 
+						}
+						else errMes = 1;
+						
 						break;
 
 					case 4://Organizer
@@ -413,14 +452,20 @@ void MENU::MainMenu()
 						break;
 
 					case 6://Games
+						
 
 						break;
 
 					case 7://Book store
-						system("cls");
+						if (this->GetInternet() == 1)
+						{
+							system("cls");
 
-						Shop.ReadFile();
-						Shop.Start();
+							Shop.ReadFile();
+							Shop.Start();
+						}
+						else errMes = 2;
+
 
 						this->PrintMenu(selection);
 						break;
@@ -451,6 +496,28 @@ void MENU::MainMenu()
 
 				if ((selection == 10 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 9;//Реализация круговой прокрутки
 				if ((selection == 10 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
+
+				if (editFlag == 1)//Установка времени перед гашением и отключением экрана, в случае активации пункта "Экран"
+				{
+					switch (selection)
+					{
+					case 1:
+
+						break;
+
+					case 6:
+						if (key == _down) SetBlackout(GetBlackout() - 1);
+						if (key == _up) SetBlackout(GetBlackout() + 1);
+						this->WriteSettings();
+						break;
+
+					case 7:
+						if (key == _down) SetOff(GetOff() - 1);
+						if (key == _up) SetOff(GetOff() + 1);
+						this->WriteSettings();
+						break;
+					}
+				}
 
 				if (key == enter)
 				{
@@ -504,30 +571,8 @@ void MENU::MainMenu()
 						this->PrintMainScreen(selection);
 						break;
 					}
-					//break;
-				}
-
-				if (editFlag == 1)//Установка времени перед гашением и отключением экрана, в случае активации пункта "Экран"
-				{
-					switch (selection)
-					{
-					case 1:
-
-						break;
-
-					case 6:
-						if (key == _down) SetBlackout(GetBlackout() - 1);
-						if (key == _up) SetBlackout(GetBlackout() + 1);
-						this->WriteSettings();
-						break;
-
-					case 7:
-						if (key == _down) SetOff(GetOff() - 1);
-						if (key == _up) SetOff(GetOff() + 1);
-						this->WriteSettings();
-						break;
-					}
-				}				
+					break;
+				}	
 
 				this->PrintOptions(selection);
 				break;				

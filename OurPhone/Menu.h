@@ -16,6 +16,7 @@ private:
 
 public:
 	int background1, background2, text1, text2;
+	int errMes;
 
 	MENU();
 	void ReadSettings();
