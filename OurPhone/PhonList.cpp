@@ -7,6 +7,7 @@ PhonList::PhonList()
 	Head = nullptr;
 	Tail = nullptr;
 	count = 0;
+	onceEnter = 0;
 }
 
 PhonList::~PhonList()
@@ -76,7 +77,7 @@ void PhonList::SetYellowTextColor(string str)
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdOut, (WORD)((14) | 14));
 	cout << str;
-	SetConsoleTextAttribute(hStdOut, (WORD)((8) | 8));
+	SetConsoleTextAttribute(hStdOut, (WORD)((15) | 15));
 }
 
 void PhonList::ColorPrint(int pos){
@@ -168,7 +169,12 @@ void PhonList::PB_Start()
 {
 	int pos = -2;
 	int action=0;
-	ReadFromFile("phonList.txt");
+	if (onceEnter == 0)
+	{
+		ReadFromFile("phonList.txt");
+		onceEnter = 1;
+	}
+
 	SortByName();
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);	
 	bool isCall = false;
@@ -1023,16 +1029,23 @@ void PhonList::SMS_Start()
 {
 	int pos = 0;
 	int action = 0;
-	ReadFromFile("phonList.txt");
+	if (onceEnter == 0)
+	{
+		ReadFromFile("phonList.txt");
+		onceEnter = 1;
+	}
+
 	SortByName();
+
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	bool isCall = false;
+	//_getch();
 	do
 	{
 		system("cls");
 		ShowSMSlist(pos);
 		BackButton(pos);
-		_getch();
+		
 		action = _getch();
 		switch (action)
 		{

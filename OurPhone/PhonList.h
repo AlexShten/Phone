@@ -21,6 +21,7 @@ public:
 	Node *Head;
 	Node *Tail;
 	int count;
+	int onceEnter;
 
 	PhonList();
 	~PhonList();
