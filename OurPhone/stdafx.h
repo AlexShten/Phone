@@ -21,5 +21,6 @@
 #include "Menu.h"
 #include "Calculator.h"
 #include "Organizer.h"
+#include "Game_XO.h"
 #include "BookStore.h"
 

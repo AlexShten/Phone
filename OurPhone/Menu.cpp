@@ -277,7 +277,7 @@ void MENU::PrintMenu(int selection)
 	PatternForPrint(selection, 3, " Calls ", "", 1);
 	PatternForPrint(selection, 4, " Organizer (+)", "", 1);
 	PatternForPrint(selection, 5, " Calculator (+)", "", 1);
-	PatternForPrint(selection, 6, " Games ", "", 1);
+	PatternForPrint(selection, 6, " Games (+-)", "", 1);
 	PatternForPrint(selection, 7, " Book store (+)", "", 1);
 
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
@@ -343,6 +343,7 @@ int MENU::MainMenu()
 
 	Organizer Org;
 	Calculator Calc;
+	CrossZero Game;
 	Store Shop;
 
 	this->ReadSettings();
@@ -463,8 +464,12 @@ int MENU::MainMenu()
 						break;
 
 					case 6://Games
-						
+						system("cls");
 
+						Game.GameSettings();
+						Game.GamePlay();
+
+						this->PrintMenu(selection);
 						break;
 
 					case 7://Book store

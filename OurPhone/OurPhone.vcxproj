@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Bookstore.h" />
     <ClInclude Include="Calculator.h" />
+    <ClInclude Include="Game_XO.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Organizer.h" />
     <ClInclude Include="stdafx.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Bookstore.cpp" />
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="Game_XO.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Organizer.cpp" />
     <ClCompile Include="OurPhone.cpp" />
