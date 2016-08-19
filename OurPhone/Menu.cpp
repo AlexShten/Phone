@@ -223,10 +223,15 @@ void MENU::PrintStatusBar()
 	cout << "\t" << this->GetOperator();
 	cout << "\t" << (this->GetInternet() == 1 ? " (int) " : " ");
 	cout << "\t" << (this->GetBattery() == 1 ? " " + to_string(this->GetBatLev()) + "%" : " ");
+	cout << endl;
+	cout << "----------------------------------------------------------" << endl;
 }
 void MENU::PrintMainScreen(int selection)
 {
 	system("cls");
+
+	this->PrintStatusBar();
+
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << " ____                                       __           " << endl;
@@ -250,9 +255,6 @@ void MENU::PrintMainScreen(int selection)
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
 	cout << "----------------------------------------------------------" << endl;
 
 	PatternForPrint(selection, 1, "  MENU", "", 0);
@@ -267,14 +269,12 @@ void MENU::PrintMenu(int selection)
 
 	this->PrintStatusBar();
 
-	cout << endl;
-	cout << "----------------------------------------------------------" << endl;
 	cout << "MENU..." << endl;
 	cout << "" << endl;
 
-	PatternForPrint(selection, 1, " Telephone book ", "", 1);
-	PatternForPrint(selection, 2, " SMS ", "", 1);
-	PatternForPrint(selection, 3, " Calls ", "", 1);
+	PatternForPrint(selection, 1, " Telephone book (+)", "", 1);
+	PatternForPrint(selection, 2, " SMS (+)", "", 1);
+	PatternForPrint(selection, 3, " Calls (-)", "", 1);
 	PatternForPrint(selection, 4, " Organizer (+)", "", 1);
 	PatternForPrint(selection, 5, " Calculator (+)", "", 1);
 	PatternForPrint(selection, 6, " Games (+-)", "", 1);
@@ -308,19 +308,17 @@ void MENU::PrintOptions(int selection)
 	
 	this->PrintStatusBar();
 
-	cout << endl;
-	cout << "----------------------------------------------------------" << endl;
 	cout << "OPTIONS..." << endl;
 	cout << "" << endl;
 
-	PatternForPrint(selection, 1, " Set operator: ", this->GetOperator(), 1);
-	PatternForPrint(selection, 2, " ON/OFF internet: ", this->GetInternet() == 1 ? "ON" : "OFF", 1);
-	PatternForPrint(selection, 3, " ON/OFF circular scrolling: ", this->GetScroll() == 1 ? "ON" : "OFF", 1);
-	PatternForPrint(selection, 4, " ON/OFF current battery charge level: ", this->GetBattery() == 1 ? "ON" : "OFF", 1);
-	PatternForPrint(selection, 5, " ON/OFF backlight off: ", this->GetScreen() == 1 ? "ON" : "OFF", 1);
-	PatternForPrint(selection, 6, " Set time before blackout, sec.: ", to_string(this->GetBlackout()), 1);
-	PatternForPrint(selection, 7, " Set time after blackout to off, sec.: ", to_string(this->GetOff()), 1);
-	PatternForPrint(selection, 8, " Set default settings ", "", 1);
+	PatternForPrint(selection, 1, " Set operator: ", ("\t\t\t " + this->GetOperator()), 1);
+	PatternForPrint(selection, 2, " ON/OFF internet: ", this->GetInternet() == 1 ? "\t\t\t   ON " : "\t\t\t   OFF", 1);
+	PatternForPrint(selection, 3, " ON/OFF circular scrolling: ", this->GetScroll() == 1 ? "\t   ON " : "\t   OFF", 1);
+	PatternForPrint(selection, 4, " ON/OFF current battery charge level: ", this->GetBattery() == 1 ? "ON " : "OFF", 1);
+	PatternForPrint(selection, 5, " ON/OFF backlight off: ", this->GetScreen() == 1 ? "\t\t   ON " : "\t\t   OFF", 1);
+	PatternForPrint(selection, 6, " Set time before blackout, sec.: ", ("\t   " + to_string(this->GetBlackout())), 1);
+	PatternForPrint(selection, 7, " Set time for blackout to off, sec.: ", (" " + to_string(this->GetOff())), 1);
+	PatternForPrint(selection, 8, " Set default settings ", "\t\t      ", 1);
 
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	cout << "----------------------------------------------------------" << endl;
@@ -341,6 +339,7 @@ int MENU::MainMenu()
 	int editFlag = 0;
 	errMes = 0;
 
+	PhonList PB;
 	Organizer Org;
 	Calculator Calc;
 	CrossZero Game;
@@ -416,19 +415,28 @@ int MENU::MainMenu()
 					switch (selection)
 					{
 					case 1://Telephone book
+						system("cls");
+						this->ScreenMode(58, 45);
 
+						PB.PB_Start();
 
+						this->ScreenMode(58, 30);
+						this->PrintMenu(selection);
 						break;
 
 					case 2://SMS
-						if (this->GetOperator() != "no sim")
+						if (this->GetOperator() == "no sim")
 						{
 							system("cls");
-							//---------------
+							this->ScreenMode(58, 37);
+
+							PB.SMS_Start();
 
 						}
 						else errMes = 1;
 
+						this->ScreenMode(58, 30);
+						this->PrintMenu(selection);
 						break;
 
 					case 3://Calls
@@ -440,6 +448,7 @@ int MENU::MainMenu()
 						}
 						else errMes = 1;
 						
+						this->PrintMenu(selection);
 						break;
 
 					case 4://Organizer
