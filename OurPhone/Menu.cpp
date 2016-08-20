@@ -68,6 +68,8 @@ MENU::MENU()
 	_screen = NULL;
 	_blackout = NULL;
 	_off = NULL;
+	NewList = nullptr;
+	newNumber = "";
 }
 
 void MENU::ReadSettings()
@@ -129,6 +131,35 @@ void MENU::WriteSettings()
 	}
 
 	Fout.close();
+}
+int MENU::ReadCallsFromFile()
+{
+	NewList = new CallList[100];
+	int quantity = 0;
+	string temp;
+	ifstream Fin;
+
+	Fin.open("CallsList.txt");
+
+	if (Fin)
+	{
+		while (!Fin.eof())
+		{
+			getline(Fin, temp);
+			if (Fin.eof()) continue;
+			NewList[quantity].Name = temp;
+
+			getline(Fin, temp);
+			NewList[quantity].Number = temp;
+
+			getline(Fin, temp);
+			quantity++;
+		}
+		Fin.close();
+	}
+
+	return quantity;
+
 }
 
 string MENU::GetOperator()
@@ -210,7 +241,7 @@ void MENU::ScreenMode(int width, int height)
 }
 void MENU::PatternForPrint(int selection, int param, string _text1, string _text2, int printParam)
 {
-	cout << "\t";
+	if (printParam != 0) cout << "\t";
 	if (selection == param) Set_Color(background1, text1);
 	else Set_Color(background2, text2);
 	if (printParam == 1) cout << param << ". " << _text1 << "  " << _text2 << endl;
@@ -257,8 +288,11 @@ void MENU::PrintMainScreen(int selection)
 	cout << "" << endl;
 	cout << "----------------------------------------------------------" << endl;
 
+	cout << "\t";
 	PatternForPrint(selection, 1, "  MENU", "", 0);
+	cout << "\t";
 	PatternForPrint(selection, 2, " OPTIONS", "", 0);
+	cout << "\t";
 	PatternForPrint(selection, 3, "  BACK", "", 0);
 
 	cout << "" << endl;
@@ -272,13 +306,13 @@ void MENU::PrintMenu(int selection)
 	cout << "MENU..." << endl;
 	cout << "" << endl;
 
-	PatternForPrint(selection, 1, " Telephone book (+)", "", 1);
-	PatternForPrint(selection, 2, " SMS (+)", "", 1);
-	PatternForPrint(selection, 3, " Calls (-)", "", 1);
-	PatternForPrint(selection, 4, " Organizer (+)", "", 1);
-	PatternForPrint(selection, 5, " Calculator (+)", "", 1);
-	PatternForPrint(selection, 6, " Games (+-)", "", 1);
-	PatternForPrint(selection, 7, " Book store (+)", "", 1);
+	PatternForPrint(selection, 1, " Telephone book", "", 1);
+	PatternForPrint(selection, 2, " SMS", "", 1);
+	PatternForPrint(selection, 3, " Calls", "", 1);
+	PatternForPrint(selection, 4, " Organizer", "", 1);
+	PatternForPrint(selection, 5, " Calculator", "", 1);
+	PatternForPrint(selection, 6, " Games", "", 1);
+	PatternForPrint(selection, 7, " Book store", "", 1);
 
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	switch (errMes)
@@ -296,7 +330,7 @@ void MENU::PrintMenu(int selection)
 	}
 	cout << "----------------------------------------------------------" << endl;
 
-	cout << "\t\t\t\t";
+	cout << "\t\t\t\t\t";
 	PatternForPrint(selection, 8, "  BACK", "", 0);
 
 	cout << "" << endl;
@@ -323,8 +357,47 @@ void MENU::PrintOptions(int selection)
 	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	cout << "----------------------------------------------------------" << endl;
 
-	cout << "\t\t\t\t";
+	cout << "\t\t\t\t\t";
 	PatternForPrint(selection, 9, "  BACK", "", 0);
+	cout << "" << endl;
+}
+void MENU::PrintCalls(int selection)
+{
+	system("cls");
+
+	this->PrintStatusBar();
+
+	cout << "CALLS..." << endl;
+	cout << "" << endl;
+
+	for (int i = 1; i <= quant; i++)
+	{
+		PatternForPrint(selection, i, NewList[i - 1].Date, " " + NewList[i - 1].Name + " " + NewList[i - 1].Number, 1);
+	}
+
+	for (int i = quant; i < 18; i++)
+	{
+		cout << "" << endl;
+	}
+
+	cout << "----------------------------------------------------------" << endl;
+	cout << "\t"<<"Yor number: "<<newNumber << endl;
+	cout << "----------------------------------------------------------" << endl;
+
+	PatternForPrint(selection, quant + 1, "0", "", 0);
+	PatternForPrint(selection, quant + 2, "1", "", 0);
+	PatternForPrint(selection, quant + 3, "2", "", 0);
+	PatternForPrint(selection, quant + 4, "3", "", 0);
+	PatternForPrint(selection, quant + 5, "4", "", 0);
+	PatternForPrint(selection, quant + 6, "5", "", 0);
+	PatternForPrint(selection, quant + 7, "6", "", 0);
+	PatternForPrint(selection, quant + 8, "7", "", 0);
+	PatternForPrint(selection, quant + 9, "8", "", 0);
+	PatternForPrint(selection, quant + 10, "9", "", 0);
+	PatternForPrint(selection, quant + 11, "+", "", 0);
+
+	PatternForPrint(selection, quant + 12, " CALL ", "", 0);
+	PatternForPrint(selection, quant + 13, "  BACK", "", 0);
 	cout << "" << endl;
 }
 
@@ -338,6 +411,7 @@ int MENU::MainMenu()
 	int timer = 0;
 	int editFlag = 0;
 	int setOperator = 1;
+
 	errMes = 0;
 
 	PhonList PB;
@@ -406,7 +480,7 @@ int MENU::MainMenu()
 				if (key == _down) selection++;
 				if (key == _up) selection--;
 
-				errMes = 0;
+				//errMes = 0;
 
 				if ((selection == 9 && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = 8;
 				if ((selection == 9 && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
@@ -426,30 +500,23 @@ int MENU::MainMenu()
 						break;
 
 					case 2://SMS
-						if (this->GetOperator() != "no sim")
-						{
-							system("cls");
-							this->ScreenMode(58, 37);
 
-							PB.SMS_Start();
+						system("cls");
+						this->ScreenMode(58, 37);
 
-						}
-						else errMes = 1;
+						PB.SMS_Start(this->GetOperator());
 
 						this->ScreenMode(58, 30);
 						this->PrintMenu(selection);
 						break;
 
-					case 3://Calls
-						if (this->GetOperator() != "no sim")
-						{
-							system("cls");
-							//---------------
+					case 3://Calls						
 
-						}
-						else errMes = 1;
-						
-						this->PrintMenu(selection);
+						quant = this->ReadCallsFromFile();
+
+						screen = 4;
+						selection = 1;
+						this->PrintCalls(selection);
 						break;
 
 					case 4://Organizer
@@ -617,7 +684,53 @@ int MENU::MainMenu()
 				}	
 
 				this->PrintOptions(selection);
-				break;				
+				break;		
+
+			case 4://Экран вызовов
+				if (key == _down) selection++;
+				if (key == _up) selection--;
+
+				if ((selection == (quant + 14) && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = (quant + 13);
+				if ((selection == (quant + 14) && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
+
+				if (key == enter)
+				{
+					if (selection == quant + 1) newNumber += "0";
+					if (selection == quant + 2) newNumber += "1";
+					if (selection == quant + 3) newNumber += "2";
+					if (selection == quant + 4) newNumber += "3";
+					if (selection == quant + 5) newNumber += "4";
+					if (selection == quant + 6) newNumber += "5";
+					if (selection == quant + 7) newNumber += "6";
+					if (selection == quant + 8) newNumber += "7";
+					if (selection == quant + 9) newNumber += "8";
+					if (selection == quant + 10) newNumber += "9";
+					if (selection == quant + 11) newNumber += "+";
+					if (selection == quant + 12)
+					{
+						if (this->GetOperator() != "no sim")
+						{
+							PB.CallNewNumber(newNumber);
+							PB.WriteToFileOutcomingCall(newNumber, -1);
+							newNumber = "";
+							delete[] NewList;
+							quant = this->ReadCallsFromFile();
+						}
+					}
+
+					if (selection == quant + 13)
+					{
+						screen = 2;
+						selection = 1;
+						delete[] NewList;
+						newNumber = "";
+						this->PrintMenu(selection);
+						break;
+					}
+				}
+
+				this->PrintCalls(selection);
+				break;
 			}
 		}
 
@@ -637,7 +750,7 @@ int MENU::MainMenu()
 			}
 
 			counterBat++;
-			cout << counterBat;
+			//cout << counterBat;
 			if (counterBat == 30)
 			{
 				this->SetBatLev(this->GetBatLev() - 1);
@@ -651,6 +764,7 @@ int MENU::MainMenu()
 			if (screen == 1) this->PrintMainScreen(selection);
 			if (screen == 2) this->PrintMenu(selection);
 			if (screen == 3) this->PrintOptions(selection);
+			if (screen == 4) this->PrintCalls(selection);
 			counter = 0;
 		}				
 	}

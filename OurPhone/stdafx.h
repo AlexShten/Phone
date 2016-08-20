@@ -20,6 +20,7 @@
 
 #include "Menu.h"
 #include "PhonList.h"
+#include "Calls.h"
 #include "Calculator.h"
 #include "Organizer.h"
 #include "Game_XO.h"

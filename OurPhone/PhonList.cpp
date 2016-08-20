@@ -142,6 +142,24 @@ bool PhonList::Call(int pos)
 	return true;
 }
 
+bool PhonList::CallNewNumber(string numb)
+{
+	system("cls");
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdOut, (WORD)((15) | 15));
+	cout << "\n\n\n\t\t\t " << "No name...";
+	cout << "\n\t\t\t " << numb << endl;
+	SetConsoleTextAttribute(hStdOut, (WORD)((8) | 8));
+	FacePaint();
+	SetConsoleTextAttribute(hStdOut, (WORD)((12) | 12));
+	cout << "\n\t\t\t____________________________\n\n";
+	cout << "\t\t\t           Finish";
+	cout << "\n\t\t\t____________________________\n";
+	SetConsoleTextAttribute(hStdOut, (WORD)((8) | 8));
+	int act = _getch();
+	return true;
+}
+
 int PhonList::Message(int pos, string &sms)
 {
 	int i = 1;
@@ -426,7 +444,7 @@ void PhonList::PB_Start(string op)
 								cout << "\t\t\t|";
 								SetYellowTextColor(" SMS ");
 								cout << "|| Edit || Del || Back |";
-								isSMS = true;
+								if (myOperator != "no sim") isSMS = true;
 							}
 							if (spPres == 2)
 							{
@@ -467,7 +485,7 @@ void PhonList::PB_Start(string op)
 								SetYellowTextColor(" SMS ");
 								cout << "|| Edit || Del || Back |";
 								isEdit = false;
-								isSMS = true;
+								if (myOperator != "no sim") isSMS = true;
 							}
 							if (spPres == 3)
 							{
@@ -804,20 +822,36 @@ void PhonList::WriteToFile(string fName)
 void PhonList::WriteToFileOutcomingCall(string fName, int pos)
 {
 	ofstream ofFile;	
-	ofFile.open(fName, std::fstream::app);
-	int i = 1;
-	Node *tmpNode = Head;
-	while (i < pos)
+
+	if (pos != -1)
 	{
-		tmpNode = tmpNode->next;
-		i++;
+		ofFile.open(fName, std::fstream::app);
+		int i = 1;
+		Node *tmpNode = Head;
+		while (i < pos)
+		{
+			tmpNode = tmpNode->next;
+			i++;
+		}
+
+		if (ofFile)
+		{
+			ofFile << tmpNode->_name << endl;
+			ofFile << tmpNode->_phoneNumber << endl;
+			ofFile << "id:" << tmpNode->id;
+			ofFile << "file:" << tmpNode->messageFile << endl;
+		}
 	}
-	if (ofFile)
+	else
 	{
-			ofFile << tmpNode->_name <<endl;
-			ofFile << tmpNode->_phoneNumber <<endl;
-			ofFile << "id:"<< tmpNode->id;
-			ofFile << "file:"<< tmpNode->messageFile << endl;
+		ofFile.open("CallsList.txt", std::fstream::app);
+		if (ofFile)
+		{
+			ofFile << "No name" << endl;
+			ofFile << fName << endl;
+			ofFile << "id:" << "xxx";
+			ofFile << "file:" << "xxx" << endl;
+		}
 	}
 	ofFile.close();
 }
@@ -1052,7 +1086,7 @@ void PhonList::BackButton(int pos)
 	}	
 }
 
-void PhonList::SMS_Start()
+void PhonList::SMS_Start(string op)
 {
 	int pos = 0;
 	int action = 0;
@@ -1100,7 +1134,7 @@ void PhonList::SMS_Start()
 				action = 27;
 				break;
 			}
-			if (pos >= 1 && pos <= count)
+			if (pos >= 1 && pos <= count && op!="no sim")
 			{
 				string tmpName, tmpPhon;
 				Node *tmp = Head;

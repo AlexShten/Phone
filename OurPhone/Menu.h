@@ -3,6 +3,14 @@
 
 using namespace std;
 
+
+struct CallList
+{
+	string Name = " ";
+	string Number = " ";
+	string Date = " ";
+};
+
 class MENU
 {
 private:
@@ -16,13 +24,18 @@ private:
 	int _off;
 
 public:
+	CallList *NewList;
+	string newNumber;
 	int background1, background2, text1, text2;
 	int errMes;
+	int quant;
 
 	MENU();
 	void ReadSettings();
 
 	void WriteSettings();
+
+	int ReadCallsFromFile();
 
 	string GetOperator();
 	void SetOperator(string);
@@ -51,8 +64,11 @@ public:
 	void PrintMenu(int);
 	void PrintOptions(int);
 
+	void PrintCalls(int selection);
+
 	int MainMenu();
 };
+
 
 int GetHour();
 int GetMinute();

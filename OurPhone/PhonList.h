@@ -34,6 +34,7 @@ public:
 	void DelByPos(int);
 	int FindByName(string);
 	bool Call(int);
+	bool CallNewNumber(string);
 	void FacePaint();
 	int Message(int, string&);
 	void ReadFromFile(string);
@@ -45,7 +46,7 @@ public:
 	int GetMaxID();
 	string CreateFileName(int);
 	void PB_Start(string);
-	void SMS_Start();
+	void SMS_Start(string);
 	void ShowSMSlist(int);
 	void MessageListCorrect();
 	void SelectContactText();

@@ -4,13 +4,13 @@ using namespace std;
 
 int main()
 {
-	MENU a;
+	MENU UsePhone;
 
 	cout << "Press any key to start: ";
 	_getch();
 	system("cls");
 
-	a.MainMenu();
+	UsePhone.MainMenu();
 
 	return 0;
 }
