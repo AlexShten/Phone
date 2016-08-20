@@ -8,6 +8,7 @@ PhonList::PhonList()
 	Tail = nullptr;
 	count = 0;
 	onceEnter = 0;
+	myOperator = " ";
 }
 
 PhonList::~PhonList()
@@ -82,8 +83,9 @@ void PhonList::SetYellowTextColor(string str)
 
 void PhonList::ColorPrint(int pos){
 
-	cout << "\n\n\t\t\tUse \"Tab\", \"Space\", \"Enter\"";
-	cout << "\n\t\t\tand Down arrow for nawigation ";
+	cout << "\n\n\t\tUse \"Left\", \"Right\", \"Up\", \"Down\"";
+	cout << "\n\t\tand \"Enter\" keys arrow for nawigation ";
+	cout << "\n\t\tpress \"Space\" for call ";
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (pos == -1)
 	{
@@ -165,8 +167,9 @@ int PhonList::Message(int pos, string &sms)
 	return act;
 }
 
-void PhonList::PB_Start()
+void PhonList::PB_Start(string op)
 {
+	myOperator = op;
 	int pos = -2;
 	int action=0;
 	if (onceEnter == 0)
@@ -184,7 +187,6 @@ void PhonList::PB_Start()
 		ColorPrint(pos);
 		ShowColorList(pos, isCall); 
 		BackButton(pos);
-		_getch();
 		action = _getch();
 		switch (action)
 		{
@@ -370,11 +372,19 @@ void PhonList::PB_Start()
 			{
 				if (isCall)
 				{
-					bool act = Call(pos);
-					if (act)
+					if (myOperator != "no sim")
+					{
+						bool act = Call(pos);
+						if (act)
+						{
+							isCall = false;
+							WriteToFileOutcomingCall("CallsList.txt", pos);
+							break;
+						}
+					}
+					else
 					{
 						isCall = false;
-						WriteToFileOutcomingCall("CallsList.txt", pos);
 						break;
 					}
 				}
@@ -538,7 +548,7 @@ void PhonList::PB_Start()
 								//cout << "\n\n\n\n\t\t\tPlease, whait some time";
 								string fileName = CreateFileName(pos);
 								WriteToFileSMS(fileName, pos, message);
-								WriteToFileOutcomingCall("SMS_file.txt", pos);
+								WriteToFileOutcomingSMS("SMS_file.txt", pos);
 							}
 							else if (act == 13 && isOk == false)
 							{
@@ -804,10 +814,31 @@ void PhonList::WriteToFileOutcomingCall(string fName, int pos)
 	}
 	if (ofFile)
 	{
-			ofFile << tmpNode->_name << "***";
-			ofFile << tmpNode->_phoneNumber << "id:";
-			ofFile << tmpNode->id << "file:";
-			ofFile << tmpNode->messageFile << endl;
+			ofFile << tmpNode->_name <<endl;
+			ofFile << tmpNode->_phoneNumber <<endl;
+			ofFile << "id:"<< tmpNode->id;
+			ofFile << "file:"<< tmpNode->messageFile << endl;
+	}
+	ofFile.close();
+}
+
+void PhonList::WriteToFileOutcomingSMS(string fName, int pos)
+{
+	ofstream ofFile;
+	ofFile.open(fName, std::fstream::app);
+	int i = 1;
+	Node *tmpNode = Head;
+	while (i < pos)
+	{
+		tmpNode = tmpNode->next;
+		i++;
+	}
+	if (ofFile)
+	{
+		ofFile << tmpNode->_name << "***";
+		ofFile << tmpNode->_phoneNumber << "id:";
+		ofFile << tmpNode->id << "file:";
+		ofFile << tmpNode->messageFile << endl;
 	}
 	ofFile.close();
 }
@@ -998,10 +1029,6 @@ void PhonList::ShowSMSlist(int pos)
 	SetConsoleTextAttribute(hStdOut, (WORD)((7) | 7));
 }
 
-void PhonList::MessageSort()
-{
-}
-
 void PhonList::MessageListCorrect()
 {
 }
@@ -1136,7 +1163,7 @@ void PhonList::SMS_Start()
 				{
 					string fileName = CreateFileName(pos);
 					WriteToFileSMS(fileName, pos, message);
-					WriteToFileOutcomingCall("SMS_file.txt", pos);
+					WriteToFileOutcomingSMS("SMS_file.txt", pos);
 				}
 				else if (act == 13 && isOk == false)
 				{
@@ -1148,8 +1175,4 @@ void PhonList::SMS_Start()
 			continue;
 		}
 	} while (action != 27);
-}
-
-void PhonList::WriteToSMSFile(string, int)
-{
 }

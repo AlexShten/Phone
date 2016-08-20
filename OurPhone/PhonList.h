@@ -22,6 +22,7 @@ public:
 	Node *Tail;
 	int count;
 	int onceEnter;
+	string myOperator;
 
 	PhonList();
 	~PhonList();
@@ -38,15 +39,14 @@ public:
 	void ReadFromFile(string);
 	void WriteToFile(string);
 	void WriteToFileOutcomingCall(string, int);
+	void WriteToFileOutcomingSMS(string, int);
 	void WriteToFileSMS(string, int, string);
 	void SortByName();
 	int GetMaxID();
 	string CreateFileName(int);
-	void PB_Start();
+	void PB_Start(string);
 	void SMS_Start();
-	void WriteToSMSFile(string, int);
 	void ShowSMSlist(int);
-	void MessageSort();
 	void MessageListCorrect();
 	void SelectContactText();
 	void BackButton(int);

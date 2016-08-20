@@ -337,6 +337,7 @@ int MENU::MainMenu()
 	int counterBat = 0;
 	int timer = 0;
 	int editFlag = 0;
+	int setOperator = 1;
 	errMes = 0;
 
 	PhonList PB;
@@ -418,14 +419,14 @@ int MENU::MainMenu()
 						system("cls");
 						this->ScreenMode(58, 45);
 
-						PB.PB_Start();
+						PB.PB_Start(this->GetOperator());
 
 						this->ScreenMode(58, 30);
 						this->PrintMenu(selection);
 						break;
 
 					case 2://SMS
-						if (this->GetOperator() == "no sim")
+						if (this->GetOperator() != "no sim")
 						{
 							system("cls");
 							this->ScreenMode(58, 37);
@@ -527,7 +528,23 @@ int MENU::MainMenu()
 					switch (selection)
 					{
 					case 1:
+						if (key == _down)
+						{
+							setOperator++;
+							if (setOperator == 5) setOperator = 1;
+						}
+						if (key == _up)
+						{
+							setOperator--;
+							if (setOperator == 0) setOperator = 4;
+						}
 
+						if (setOperator == 1) SetOperator("no sim");
+						if (setOperator == 2) SetOperator("K-star");
+						if (setOperator == 3) SetOperator("  UMS");
+						if (setOperator == 4) SetOperator(" Life");
+
+						this->WriteSettings();
 						break;
 
 					case 6:
@@ -549,7 +566,7 @@ int MENU::MainMenu()
 					switch (selection)
 					{
 					case 1://Set operator
-
+						editFlag == 0 ? editFlag = 1 : editFlag = 0;
 						break;
 
 					case 2://ON/OFF internet
