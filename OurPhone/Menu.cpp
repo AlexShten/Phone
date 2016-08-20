@@ -687,8 +687,8 @@ int MENU::MainMenu()
 				break;		
 
 			case 4://Экран вызовов
-				if (key == _down) selection++;
-				if (key == _up) selection--;
+				if ((key == _down && selection <= quant) || (key == _right && selection > quant)) selection++;
+				if ((key == _up && selection <= quant) || (key == _left && selection > quant)) selection--;
 
 				if ((selection == (quant + 14) && this->GetScroll() == 0) || (selection == 0 && this->GetScroll() == 1)) selection = (quant + 13);
 				if ((selection == (quant + 14) && this->GetScroll() == 1) || (selection == 0 && this->GetScroll() == 0)) selection = 1;
